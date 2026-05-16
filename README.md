@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 숙박업 호스트 성향 테스트
 
-## Getting Started
+숙박업 호스트라면 누구나 마주치는 10가지 상황에 대한 답변을 선택하면, Gemini AI가 당신의 호스팅 스타일을 분석해 드립니다.
 
-First, run the development server:
+## 빠른 시작
 
 ```bash
+# 1. 의존성 설치
+npm install
+
+# 2. 환경변수 설정
+cp .env.local.example .env.local
+# .env.local 파일을 열어 GEMINI_API_KEY 입력
+
+# 3. 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 환경 변수
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| 변수 | 필수 | 설명 |
+|------|------|------|
+| `GEMINI_API_KEY` | ✅ | [Google AI Studio](https://aistudio.google.com)에서 발급 |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 기술 스택
 
-## Learn More
+- **Framework**: Next.js 16 (App Router) + TypeScript
+- **Styling**: Tailwind CSS v4
+- **AI**: Google Gemini API (`gemini-2.5-flash`)
+- **Icons**: Lucide React
 
-To learn more about Next.js, take a look at the following resources:
+## 앱 흐름
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+랜딩 → 퀴즈 (10문항) → 로딩 → 결과 카드 + 공유
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 테스트
 
-## Deploy on Vercel
+```bash
+npm test           # 전체 테스트 (12개)
+npm run test:watch # 워치 모드
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 빌드
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
