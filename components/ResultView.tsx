@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { AnalysisResult } from '@/types';
-import { RefreshCw, Share2, Loader2 } from 'lucide-react';
+import { RefreshCw, Share2, Loader2, Copy, Check } from 'lucide-react';
 
 interface Props {
   result: AnalysisResult | null;
@@ -12,6 +13,18 @@ interface Props {
 }
 
 export default function ResultView({ result, isLoading, error, onRetry, onReset }: Props) {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = async (text: string, section: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(section);
+      setTimeout(() => setCopied(null), 2000);
+    } catch {
+      // clipboard unavailable — silent fail
+    }
+  };
+
   const handleShare = async () => {
     if (!result) return;
     const shareText = `🏠 나의 호스팅 스타일: ${result.title}\n\n${result.summary}\n\n호스트 성향 테스트 해보기`;
@@ -70,7 +83,18 @@ export default function ResultView({ result, isLoading, error, onRetry, onReset 
   return (
     <div className="flex flex-col gap-5 py-2">
       {/* 결과 헤더 카드 */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6 text-center shadow-sm">
+      <div className="relative bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6 text-center shadow-sm">
+        <button
+          onClick={() => copyToClipboard(`${result.title}\n\n${result.summary}`, 'header')}
+          aria-label="결과 복사"
+          className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold text-amber-600 hover:bg-amber-100 transition-colors"
+        >
+          {copied === 'header' ? (
+            <><Check className="w-3.5 h-3.5" />복사됨!</>
+          ) : (
+            <><Copy className="w-3.5 h-3.5" />복사</>
+          )}
+        </button>
         <div className="text-5xl mb-3">🏠</div>
         <p className="text-amber-600 text-xs font-bold uppercase tracking-widest mb-2">
           나의 호스팅 스타일
@@ -80,10 +104,23 @@ export default function ResultView({ result, isLoading, error, onRetry, onReset 
       </div>
 
       {/* 상세 분석 카드 */}
-      <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
-          상세 분석
-        </h3>
+      <div className="relative bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+            상세 분석
+          </h3>
+          <button
+            onClick={() => copyToClipboard(result.reason, 'reason')}
+            aria-label="상세 분석 복사"
+            className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold text-gray-400 hover:bg-gray-100 transition-colors"
+          >
+            {copied === 'reason' ? (
+              <><Check className="w-3.5 h-3.5" />복사됨!</>
+            ) : (
+              <><Copy className="w-3.5 h-3.5" />복사</>
+            )}
+          </button>
+        </div>
         <p className="text-gray-700 leading-relaxed text-sm">{result.reason}</p>
       </div>
 
