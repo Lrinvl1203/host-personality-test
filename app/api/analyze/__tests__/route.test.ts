@@ -9,6 +9,7 @@ jest.mock('@google/genai', () => ({
     models: {
       generateContent: jest.fn().mockResolvedValue({
         text: JSON.stringify({
+          typeId: 'perfectionist',
           summary: '당신은 꼼꼼한 원칙주의 호스트입니다.',
           title: '철두철미한 원칙주의자',
           reason: '4~5문장의 상세 분석 내용입니다.',

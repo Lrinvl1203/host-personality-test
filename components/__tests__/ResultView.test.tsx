@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import ResultView from '../ResultView';
 
 const mockResult = {
+  typeId: 'perfectionist',
   summary: '당신은 꼼꼼한 원칙주의 호스트입니다.',
   title: '철두철미한 원칙주의자',
   reason: '상세한 분석 내용이 여기에 들어갑니다.',

@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { AnalysisResult } from '@/types';
+import { HOST_TYPES } from '@/lib/host-types';
 import { RefreshCw, Share2, Loader2, Copy, Check } from 'lucide-react';
 
 interface Props {
@@ -14,6 +16,10 @@ interface Props {
 
 export default function ResultView({ result, isLoading, error, onRetry, onReset }: Props) {
   const [copied, setCopied] = useState<string | null>(null);
+
+  const characterSrc = result
+    ? `/characters/${HOST_TYPES.find((t) => t.id === result.typeId) ? result.typeId : 'angel'}.png`
+    : null;
 
   const copyToClipboard = async (text: string, section: string) => {
     try {
@@ -95,7 +101,19 @@ export default function ResultView({ result, isLoading, error, onRetry, onReset 
             <><Copy className="w-3.5 h-3.5" />복사</>
           )}
         </button>
-        <div className="text-5xl mb-3">🏠</div>
+        <div className="flex justify-center mb-3">
+          {characterSrc ? (
+            <Image
+              src={characterSrc}
+              alt={result.title}
+              width={140}
+              height={140}
+              className="drop-shadow-md"
+            />
+          ) : (
+            <div className="text-5xl">🏠</div>
+          )}
+        </div>
         <p className="text-amber-600 text-xs font-bold uppercase tracking-widest mb-2">
           나의 호스팅 스타일
         </p>
